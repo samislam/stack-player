@@ -1,5 +1,5 @@
 {
-  "name": "@samislam/switcher",
+  "name": "stack-player",
   "version": "1.0.0",
   "description": "stack-player is a small powerful express middleware that allows for executing middlewares switching between them conditionally and handling their errors separately",
   "main": "./src/index.js",
