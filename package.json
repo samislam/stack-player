@@ -1,14 +1,14 @@
 {
   "name": "@samislam/switcher",
-  "version": "3.1.0",
-  "description": "Switcher is a small powerful express middleware that allows for switching between different middleware stacks.",
+  "version": "1.0.0",
+  "description": "stack-player is a small powerful express middleware that allows for executing middlewares switching between them conditionally and handling their errors separately",
   "main": "./src/index.js",
   "scripts": {
     "test": "nodemon -q ./tests"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/samislam/switcher.git"
+    "url": "git+https://github.com/samislam/stack-player.git"
   },
   "keywords": [
     "express",
@@ -18,20 +18,20 @@
     "track",
     "express-track",
     "middleware-handler",
-    "expressjs"
+    "expressjs",
+    "stack-player",
+    "express-stack-player"
   ],
   "author": "Islam Yamor",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/samislam/switcher/issues"
+    "url": "https://github.com/samislam/stack-player/issues"
   },
-  "homepage": "https://github.com/samislam/switcher#readme",
+  "homepage": "https://github.com/samislam/stack-player#readme",
   "dependencies": {
     "@samislam/checktypes": "^1.0.1",
     "@samislam/log": "^1.1.4",
-    "await-to-js": "^3.0.0",
     "express": "^4.18.1",
-    "express-async-handler": "^1.2.0",
     "lodash": "^4.17.21"
   },
   "prettier": {
