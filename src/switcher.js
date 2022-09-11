@@ -15,7 +15,7 @@ function switcher(middlewareStacks, options = {}) {
     const reqresnext = [req, res, next]
     const [chosenOptions] = await getOptionsValue(options, reqresnext, {
       tryCatchWrap: true,
-      autoCallNext: true,
+      autoCallNext: false,
       callNextAfterSwitcher: true,
       localErrorHandler: undefined,
       else: (req, res, next) => next(),
