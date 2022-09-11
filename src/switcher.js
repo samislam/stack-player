@@ -16,7 +16,7 @@ function switcher(middlewareStacks, options = {}) {
     const [chosenOptions] = await getOptionsValue(options, reqresnext, {
       tryCatchWrap: true,
       autoCallNext: false,
-      callNextAfterSwitcher: true,
+      callNextAfterStackPlayer: false,
       localErrorHandler: undefined,
       else: (req, res, next) => next(),
       disableLEHForStackResolver: false,
@@ -64,7 +64,7 @@ function switcher(middlewareStacks, options = {}) {
       if (handledToErrorHandler) break // break if sNext() was called with an error
       i++
     }
-    if (chosenOptions.callNextAfterSwitcher) next()
+    if (chosenOptions.callNextAfterStackPlayer) next()
   })
 }
 
