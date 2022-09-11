@@ -626,6 +626,26 @@ const app = express()
 //   sendResMiddleware
 // )
 
+// ^ test #22
+// * middlewareStack: ()=> ()=> { next() }
+// ? uncomment the following code block to test
+
+// app.route('/api').get(
+//   newLineMiddleware,
+//   setUser,
+//   switcher((req, res, next) => {
+//     console.log('running the middleware wrapper for singlular mw')
+//     return (req, res, next) => {
+//       console.log('cors middleware ran')
+//       next()
+//     }
+//   }),
+//   (req, res, next) => {
+//     console.log('hello from mw after stack-player')
+//     res.send('mew!')
+//   }
+// )
+
 app.use((error, req, res, next) => {
   console.log('caught an error in the global error handler')
   console.log(error)

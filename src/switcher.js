@@ -29,7 +29,7 @@ function switcher(middlewareStacks, options = {}) {
       if (error) {
         next(error)
         handledToErrorHandler = true
-      }
+      } else if (stack.length === i) next()
     }
     // initializing the state -----
     let wasSNextCalled = false // init
