@@ -57,7 +57,7 @@ function stackPlayer(middlewareStacks, options = {}) {
         })
       )
     }
-    console.log({ errorHappen, callNext: chosenOptions.callNext, autoCallNext: chosenOptions.autoCallNext })
+    // console.log({ errorHappen, callNext: chosenOptions.callNext, autoCallNext: chosenOptions.autoCallNext })
     if (!errorHappen && chosenOptions.callNext && chosenOptions.autoCallNext) return next()
     if (!errorHappen && chosenOptions.callNext && !wasSNextCalled && stack.length === i + 1) return next()
   }

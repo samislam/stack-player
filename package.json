@@ -1,6 +1,6 @@
 {
   "name": "stack-player",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "stack-player is a small powerful express middleware that allows for executing middlewares switching between them conditionally and handling their errors separately",
   "main": "./src/index.js",
   "scripts": {
