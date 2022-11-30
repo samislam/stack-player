@@ -20,20 +20,17 @@ const getOptionsValue = async (userGivenOptionsArg, args, defaultOptions) => {
   return [chosenOptions, defaultOptions]
 }
 
-const getMiddlewareStack = async (userGivenMWStacks, elseMw, args = []) => {
-  let stackValue
+const getMiddlewareStack = async (userGivenMWStacks, args = []) => {
   switch (true) {
     case checkTypes.isArray(userGivenMWStacks):
-      stackValue = userGivenMWStacks
-      break
+      return userGivenMWStacks // array
     case checkTypes.isAsycOrSyncFunc(userGivenMWStacks):
       const [error, stack] = await to(() => userGivenMWStacks(...args))
       if (error) throw error
-      stackValue = stack
+      if (checkTypes.isArray(stack)) return stack // array, userGivenMWStacks was a function which returned an array
+      if(checkTypes.isAsycOrSyncFunc(stack)) return [stack] // function, userGivenMWStacks was a function which returned a function
+      return null // else = userGivenMWStacks was a function which returned anything except an array or function
   }
-
-  if (checkTypes.isAsycOrSyncFunc(stackValue)) stackValue = [stackValue]
-  else if (!checkTypes.isArray(stackValue)) stackValue = [elseMw]
 
   return stackValue
 }

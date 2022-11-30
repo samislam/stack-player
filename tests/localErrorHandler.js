@@ -1,6 +1,6 @@
 function localErrorHandler(err, req, res, next) {
   console.log('inside local error handler')
-  next('some error')
+  next(err)
 }
 
 module.exports = localErrorHandler

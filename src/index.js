@@ -1,3 +1,3 @@
-const switcher = require('./switcher')
+const stackPlayer = require('./stack-player')
 
-module.exports = switcher
+module.exports = stackPlayer

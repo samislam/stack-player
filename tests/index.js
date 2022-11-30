@@ -3,10 +3,10 @@
 =============================================*/
 const express = require('express')
 const log = require('@samislam/log')
-const switcher = require('../src/index.js')
+const stackPlayer = require('../src/index.js')
+const localErrorHandler = require('./localErrorHandler')
 
 /*=====  End of importing dependencies  ======*/
-const localErrorHandler = require('./localErrorHandler')
 
 /*=============================================
 =            pre-defined Middlewares            =
@@ -22,7 +22,7 @@ const sendResMiddleware = (req, res, next) => {
 }
 
 const setUser = (req, res, next) => {
-  req.$USER = 'markets'
+  req.$USER = 'market'
   next()
 }
 /*=====  End of pre-defined Middlewares  ======*/
@@ -33,14 +33,17 @@ const app = express()
 // * (middlewareStacks: function --> [], options: ---)
 // ? uncomment the following code block to test
 
-// app.route('/api').get(switcher(() => []), sendResMiddleware)
+// app.route('/api').get(
+//   stackPlayer(() => [], { callNext: true, autoCallNext: true }),
+//   sendResMiddleware
+// )
 
 // ^ test #-1
 // * (middlewareStacks: function --> undefined, options: ---)
 // ? uncomment the following code block to test
 
 // app.route('/api').get(
-//   switcher(() => {}),
+//   stackPlayer(() => {}, { callNext: true }),
 //   sendResMiddleware
 // )
 
@@ -48,7 +51,7 @@ const app = express()
 // * (middlewareStacks: function --> [], options: ---)
 // ? uncomment the following code block to test
 
-// app.route('/api').get(switcher([]), sendResMiddleware)
+// app.route('/api').get(stackPlayer([], { callNext: true }), sendResMiddleware)
 
 // ^ test #1
 // * (middlewareStacks: function --> [], options: ---)
@@ -57,185 +60,39 @@ const app = express()
 // app.route('/api').get(
 //   newLineMiddleware,
 //   setUser,
-//   switcher(
+//   stackPlayer(
 //     (req) =>
 //       ({
 //         admin: [
 //           (req, res, next) => {
-//             log.i('/api -> switcher -> admin middleware #1')
+//             log.i('/api -> stackPlayer -> admin middleware #1')
 //             // next()
 //           },
 //           (req, res, next) => {
-//             log.i('/api -> switcher -> admin middleware #2')
+//             log.i('/api -> stackPlayer -> admin middleware #2')
 //             // next()
 //           },
 //           (req, res, next) => {
-//             log.i('/api -> switcher -> admin middleware #3')
+//             log.i('/api -> stackPlayer -> admin middleware #3')
 
 //             // next()
 //           },
 //         ],
 //         market: [
 //           (req, res, next) => {
-//             log.i('/api -> switcher -> market middleware #1')
+//             log.i('/api -> stackPlayer -> market middleware #1')
 //             next()
 //           },
 //           (req, res, next) => {
-//             log.i('/api -> switcher -> market middleware #2')
+//             log.i('/api -> stackPlayer -> market middleware #2')
 //             next()
 //           },
 //           (req, res, next) => {
-//             log.i('/api -> switcher -> market middleware #3')
-//             next()
-//           },
-//         ],
-//       }[req.$USER])
-//   ),
-//   sendResMiddleware
-// )
-
-// ^ test #2
-// * (middlewareStacks: function --> [], options: {else})
-// ? uncomment the following code block to test
-
-// app.route('/api').get(
-//   newLineMiddleware,
-//   setUser,
-//   switcher(
-//     (req) =>
-//       ({
-//         admin: [
-//           (req, res, next) => {
-//             log.i('/api -> switcher -> admin middleware #1')
-//             // next()
-//           },
-//           (req, res, next) => {
-//             log.i('/api -> switcher -> admin middleware #2')
-//             // next()
-//           },
-//           (req, res, next) => {
-//             log.i('/api -> switcher -> admin middleware #3')
-
-//             // next()
-//           },
-//         ],
-//         market: [
-//           (req, res, next) => {
-//             log.i('/api -> switcher -> market middleware #1')
-//             next()
-//           },
-//           (req, res, next) => {
-//             log.i('/api -> switcher -> market middleware #2')
-//             next()
-//           },
-//           (req, res, next) => {
-//             log.i('/api -> switcher -> market middleware #3')
+//             log.i('/api -> stackPlayer -> market middleware #3')
 //             next()
 //           },
 //         ],
 //       }[req.$USER]),
-//     { else: (req, res, next) => console.log('no way!') }
-//   ),
-//   sendResMiddleware
-// )
-
-// ^ test #3
-// * (middlewareStacks: function --> [], options: {else + !callNextAfterSwitcher })
-// ? uncomment the following code block to test
-
-// app.route('/api').get(
-//   newLineMiddleware,
-//   setUser,
-//   switcher(
-//     (req) =>
-//       ({
-//         admin: [
-//           (req, res, next) => {
-//             log.i('/api -> switcher -> admin middleware #1')
-//             // next()
-//           },
-//           (req, res, next) => {
-//             log.i('/api -> switcher -> admin middleware #2')
-//             // next()
-//           },
-//           (req, res, next) => {
-//             log.i('/api -> switcher -> admin middleware #3')
-
-//             // next()
-//           },
-//         ],
-//         market: [
-//           (req, res, next) => {
-//             log.i('/api -> switcher -> market middleware #1')
-//             next()
-//           },
-//           (req, res, next) => {
-//             log.i('/api -> switcher -> market middleware #2')
-//             next()
-//           },
-//           (req, res, next) => {
-//             log.i('/api -> switcher -> market middleware #3')
-//             next()
-//           },
-//         ],
-//       }[req.$USER]),
-//     {
-//       else: (req, res, next) => {
-//         console.log('no way!')
-//       },
-//       callNextAfterSwitcher: false,
-//     }
-//   ),
-//   sendResMiddleware
-// )
-
-// ^ test #4
-// * (middlewareStacks: function --> [], options: {else + !callNextAfterSwitcher(+call next inside) })
-// ? uncomment the following code block to test
-
-// app.route('/api').get(
-//   newLineMiddleware,
-//   setUser,
-//   switcher(
-//     (req) =>
-//       ({
-//         admin: [
-//           (req, res, next) => {
-//             log.i('/api -> switcher -> admin middleware #1')
-//             // next()
-//           },
-//           (req, res, next) => {
-//             log.i('/api -> switcher -> admin middleware #2')
-//             // next()
-//           },
-//           (req, res, next) => {
-//             log.i('/api -> switcher -> admin middleware #3')
-
-//             // next()
-//           },
-//         ],
-//         market: [
-//           (req, res, next) => {
-//             log.i('/api -> switcher -> market middleware #1')
-//             next()
-//           },
-//           (req, res, next) => {
-//             log.i('/api -> switcher -> market middleware #2')
-//             next()
-//           },
-//           (req, res, next) => {
-//             log.i('/api -> switcher -> market middleware #3')
-//             next()
-//           },
-//         ],
-//       }[req.$USER]),
-//     {
-//       else: (req, res, next) => {
-//         console.log('no way!')
-//         next()
-//       },
-//       callNextAfterSwitcher: false,
-//     }
 //   ),
 //   sendResMiddleware
 // )
@@ -247,18 +104,17 @@ const app = express()
 // app.route('/api').get(
 //   newLineMiddleware,
 //   setUser,
-//   switcher([
+//   stackPlayer([
 //     (req, res, next) => {
-//       log.i('/api -> switcher -> admin middleware #1')
+//       log.i('/api -> stackPlayer -> admin middleware #1')
 //       // next()
 //     },
 //     (req, res, next) => {
-//       log.i('/api -> switcher -> admin middleware #2')
+//       log.i('/api -> stackPlayer -> admin middleware #2')
 //       // next()
 //     },
 //     (req, res, next) => {
-//       log.i('/api -> switcher -> admin middleware #3')
-
+//       log.i('/api -> stackPlayer -> admin middleware #3')
 //       // next()
 //     },
 //   ]),
@@ -272,25 +128,24 @@ const app = express()
 // app.route('/api').get(
 //   newLineMiddleware,
 //   setUser,
-//   switcher(
+//   stackPlayer(
 //     [
 //       (req, res, next) => {
-//         log.i('/api -> switcher -> admin middleware #1')
+//         log.i('/api -> stackPlayer -> admin middleware #1')
 //         // next()
 //       },
 //       (req, res, next) => {
-//         log.i('/api -> switcher -> admin middleware #2')
+//         log.i('/api -> stackPlayer -> admin middleware #2')
 //         // next()
 //       },
 //       (req, res, next) => {
-//         log.i('/api -> switcher -> admin middleware #3')
-
-//         // next()
+//         log.i('/api -> stackPlayer -> admin middleware #3')
+//         next()
 //       },
 //     ],
 //     {
-//       autoCallNext: false,
-
+//       autoCallNext: true,
+//       // callNext: true,
 //     }
 //   ),
 //   sendResMiddleware
@@ -303,15 +158,16 @@ const app = express()
 // app.route('/api').get(
 //   newLineMiddleware,
 //   setUser,
-//   switcher(
+//   stackPlayer(
 //     [
 //       (req, res, next) => {
-//         log.i('/api -> switcher -> admin middleware #1')
+//         log.i('/api -> stackPlayer -> admin middleware #1')
 //         // next()
 //       },
 //     ],
 //     {
-//       autoCallNext: false,
+//       // autoCallNext: false,
+//       // callNext: true,
 //     }
 //   ),
 //   sendResMiddleware
@@ -324,20 +180,21 @@ const app = express()
 // app.route('/api').get(
 //   newLineMiddleware,
 //   setUser,
-//   switcher([], {
-//     autoCallNext: false,
+//   stackPlayer([], {
+//     callNext: true,
+//     autoCallNext: true,
 //   }),
 //   sendResMiddleware
 // )
 
 // ^ test #9
-// * !callNextAfterSwitcher + stack is undefined
+// * !callNextAfterstackPlayer + stack is undefined
 // ? uncomment the following code block to test
 
 // app.route('/api').get(
 //   newLineMiddleware,
 //   setUser,
-//   switcher(() => {}, { callNextAfterSwitcher: false }),
+//   stackPlayer(() => {}, { callNext: false, autoCallNext: true }),
 //   sendResMiddleware
 // )
 
@@ -348,7 +205,7 @@ const app = express()
 // app.route('/api').get(
 //   newLineMiddleware,
 //   setUser,
-//   switcher(
+//   stackPlayer(
 //     () => {
 //       x.y.z // should throw an error
 //       return []
@@ -367,7 +224,7 @@ const app = express()
 // app.route('/api').get(
 //   newLineMiddleware,
 //   setUser,
-//   switcher(
+//   stackPlayer(
 //     async () => {
 //       x.y.z // should throw an error
 //       return []
@@ -386,12 +243,12 @@ const app = express()
 // app.route('/api').get(
 //   newLineMiddleware,
 //   setUser,
-//   switcher(async () => {
+//   stackPlayer(async () => {
 //     x.y.z // should throw an error
 //     return []
 //   }),
 //   () => {
-//     console.log('running the middleware after switcher which had an error')
+//     console.log('running the middleware after stackPlayer which had an error')
 //   },
 //   sendResMiddleware
 // )
@@ -403,19 +260,18 @@ const app = express()
 // app.route('/api').get(
 //   newLineMiddleware,
 //   setUser,
-//   switcher(async (req) => [
+//   stackPlayer(async (req) => [
 //     async (req, res, next) => {
-//       log.i('/api -> switcher -> admin middleware #1')
-//       // next()
+//       log.i('/api -> stackPlayer -> admin middleware #1')
+//       next()
 //     },
 //     async (req, res, next) => {
-//       log.i('/api -> switcher -> admin middleware #2')
-//       // next()
+//       log.i('/api -> stackPlayer -> admin middleware #2')
+//       next()
 //     },
 //     async (req, res, next) => {
-//       log.i('/api -> switcher -> admin middleware #3')
-
-//       // next()
+//       log.i('/api -> stackPlayer -> admin middleware #3')
+//       next()
 //     },
 //   ]),
 //   sendResMiddleware
@@ -428,21 +284,20 @@ const app = express()
 // app.route('/api').get(
 //   newLineMiddleware,
 //   setUser,
-//   switcher(async (req) => [
+//   stackPlayer(async (req) => [
 //     (req, res, next) => {
-//       log.i('/api -> switcher -> admin middleware #1')
-//       // next()
+//       log.i('/api -> stackPlayer -> admin middleware #1')
+//       next()
 //     },
 //     async (req, res, next) => {
-//       log.i('/api -> switcher -> admin middleware #2')
+//       log.i('/api -> stackPlayer -> admin middleware #2')
 //       const x = async () => {}
 //       await x()
-//       // next()
+//       next()
 //     },
 //     (req, res, next) => {
-//       log.i('/api -> switcher -> admin middleware #3')
-
-//       // next()
+//       log.i('/api -> stackPlayer -> admin middleware #3')
+//       next()
 //     },
 //   ]),
 //   sendResMiddleware
@@ -455,21 +310,20 @@ const app = express()
 // app.route('/api').get(
 //   newLineMiddleware,
 //   setUser,
-//   switcher(async (req) => [
+//   stackPlayer(async (req) => [
 //     (req, res, next) => {
-//       log.i('/api -> switcher -> admin middleware #1')
-//       // next()
+//       log.i('/api -> stackPlayer -> admin middleware #1')
+//       next()
 //     },
 //     async (req, res, next) => {
-//       log.i('/api -> switcher -> admin middleware #2')
+//       log.i('/api -> stackPlayer -> admin middleware #2')
 //       const x = async () => { throw new Error("some error in async middleware #2")}
 //       await x()
-//       // next()
+//       next()
 //     },
 //     (req, res, next) => {
-//       log.i('/api -> switcher -> admin middleware #3')
-
-//       // next()
+//       log.i('/api -> stackPlayer -> admin middleware #3')
+//       next()
 //     },
 //   ]),
 //   sendResMiddleware
@@ -482,14 +336,14 @@ const app = express()
 // app.route('/api').get(
 //   newLineMiddleware,
 //   setUser,
-//   switcher(async (req) => [
+//   stackPlayer(async (req) => [
 //     (req, res, next) => {
-//       log.i('/api -> switcher -> admin middleware #1')
+//       log.i('/api -> stackPlayer -> admin middleware #1')
 //       throw new Error('some error in middleware #1')
-//       // next()
+//       next()
 //     },
 //     async (req, res, next) => {
-//       log.i('/api -> switcher -> admin middleware #2') // & this middleware must run automatically even thought the previous one had an error
+//       log.i('/api -> stackPlayer -> admin middleware #2') // & this middleware must run automatically even thought the previous one had an error
 //       // const x = async () => {
 //       //   throw new Error('some async error in async middleware #2')
 //       // }
@@ -498,7 +352,7 @@ const app = express()
 //       // next()
 //     },
 //     (req, res, next) => {
-//       log.i('/api -> switcher -> admin middleware #3')
+//       log.i('/api -> stackPlayer -> admin middleware #3')
 
 //       // next()
 //     },
@@ -513,24 +367,24 @@ const app = express()
 // app.route('/api').get(
 //   newLineMiddleware,
 //   setUser,
-//   switcher(
+//   stackPlayer(
 //     async (req) => [
 //       (req, res, next) => {
-//         log.i('/api -> switcher -> admin middleware #1')
+//         log.i('/api -> stackPlayer -> admin middleware #1')
 //         throw new Error('some error in middleware #1')
-//         // next()
+//         next()
 //       },
 //       async (req, res, next) => {
-//         log.i('/api -> switcher -> admin middleware #2') // & this middleware shouldn't run automatically unless next() was explicitly called (and only if you're calling it inside a local error handler)
-//         // const x = async () => {
-//         //   throw new Error('some async error in async middleware #2')
-//         // }
-//         // await x()
+//         log.i('/api -> stackPlayer -> admin middleware #2') // & this middleware shouldn't run automatically unless next() was explicitly called (and only if you're calling it inside a local error handler)
+//         const x = async () => {
+//           throw new Error('some async error in async middleware #2')
+//         }
+//         await x()
 //         throw new Error('some immediate error in async middleware #2')
-//         // next()
+//         next()
 //       },
 //       (req, res, next) => {
-//         log.i('/api -> switcher -> admin middleware #3') // & this middleware shouldn't run automatically unless next() was explicitly called (and only if you're calling it inside a local error handler)
+//         log.i('/api -> stackPlayer -> admin middleware #3') // & this middleware shouldn't run automatically unless next() was explicitly called (and only if you're calling it inside a local error handler)
 
 //         // next()
 //       },
@@ -547,28 +401,28 @@ const app = express()
 // app.route('/api').get(
 //   newLineMiddleware,
 //   setUser,
-//   switcher(
+//   stackPlayer(
 //     async (req) => [
 //       (req, res, next) => {
-//         log.i('/api -> switcher -> admin middleware #1')
+//         log.i('/api -> stackPlayer -> admin middleware #1')
 //         throw new Error('some error in middleware #1')
 //         // next()
 //       },
 //       async (req, res, next) => {
-//         log.i('/api -> switcher -> admin middleware #2') // & this middleware shouldn't run automatically
+//         log.i('/api -> stackPlayer -> admin middleware #2') // & this middleware shouldn't run automatically
 //         // const x = async () => {
 //         //   throw new Error('some async error in async middleware #2')
 //         // }
 //         // await x()
-//         throw new Error('some immediate error in async middleware #2')
+//         // throw new Error('some immediate error in async middleware #2')
 //         // next()
 //       },
 //       (req, res, next) => {
-//         log.i('/api -> switcher -> admin middleware #3') // & this middleware shouldn't run automatically
+//         log.i('/api -> stackPlayer -> admin middleware #3') // & this middleware shouldn't run automatically
 //         // next()
 //       },
 //     ],
-//     { localErrorHandler }
+//     { autoCallNext: true, callNext: true }
 //   ),
 //   sendResMiddleware
 // )
@@ -580,21 +434,24 @@ const app = express()
 // app.route('/api').get(
 //   newLineMiddleware,
 //   setUser,
-//   switcher(async (req) => [
-//     async (req, res, next) => {
-//       log.i('/api -> switcher -> admin async middleware #1')
-//       const asyncFunc1 = async () => {}
-//       const asyncFunc2 = async () => {}
-//       const asyncFunc3 = async () => {}
-//       await asyncFunc1()
-//       await asyncFunc2()
-//       await asyncFunc3()
-//     },
-//     (req, res, next) => {
-//       log.i('/api -> switcher -> admin middleware #2')
-//       // next()
-//     },
-//   ]),
+//   stackPlayer(
+//     async (req) => [
+//       async (req, res, next) => {
+//         log.i('/api -> stackPlayer -> admin async middleware #1')
+//         const asyncFunc1 = async () => {}
+//         const asyncFunc2 = async () => {}
+//         const asyncFunc3 = async () => {}
+//         await asyncFunc1()
+//         await asyncFunc2()
+//         await asyncFunc3()
+//       },
+//       (req, res, next) => {
+//         log.i('/api -> stackPlayer -> admin middleware #2')
+//         next()
+//       },
+//     ],
+//     { autoCallNext: true }
+//   ),
 //   sendResMiddleware
 // )
 
@@ -605,7 +462,13 @@ const app = express()
 // app.route('/api').get(
 //   newLineMiddleware,
 //   setUser,
-//   switcher(async (req) => (req, res, next) => console.log('running a singular middleware')),
+//   stackPlayer(
+//     async (req) => (req, res, next) => {
+//       console.log('running a singular middleware')
+//       // next()
+//     },
+//     { autoCallNext: true, callNext: true }
+//   ),
 //   sendResMiddleware
 // )
 
@@ -616,12 +479,12 @@ const app = express()
 // app.route('/api').get(
 //   newLineMiddleware,
 //   setUser,
-//   switcher(
+//   stackPlayer(
 //     async (req) => {
 //       throw new Error('new error happened inside the function')
 //       return (req, res, next) => console.log('running a singular middleware')
 //     },
-//     { localErrorHandler, disableLEHForStackResolver: true }
+//     { localErrorHandler }
 //   ),
 //   sendResMiddleware
 // )
@@ -633,13 +496,17 @@ const app = express()
 // app.route('/api').get(
 //   newLineMiddleware,
 //   setUser,
-//   switcher((req, res, next) => {
-//     console.log('running the middleware wrapper for singlular mw')
-//     return (req, res, next) => {
-//       console.log('cors middleware ran')
-//       next()
-//     }
-//   }),
+//   stackPlayer(
+//     (req, res, next) => {
+//       console.log('running the middleware wrapper for singlular mw')
+//       return (req, res, next) => {
+//         console.log('cors middleware ran')
+//         throw new Error('error from inside the singular middleware')
+//         next()
+//       }
+//     },
+//     { localErrorHandler }
+//   ),
 //   (req, res, next) => {
 //     console.log('hello from mw after stack-player')
 //     res.send('mew!')
@@ -654,4 +521,4 @@ app.use((error, req, res, next) => {
 })
 
 console.clear()
-app.listen(8921, () => log.info(log.label, 'test listening on port 8921'))
+app.listen(8000, () => log.info(log.label, 'test listening on port 8000'))
