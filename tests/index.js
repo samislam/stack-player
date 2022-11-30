@@ -202,20 +202,21 @@ const app = express()
 // * cause an error in the body of middlewareStack (sync)
 // ? uncomment the following code block to test
 
-// app.route('/api').get(
-//   newLineMiddleware,
-//   setUser,
-//   stackPlayer(
-//     () => {
-//       x.y.z // should throw an error
-//       return []
-//     },
-//     {
-//       autoCallNext: false,
-//     }
-//   ),
-//   sendResMiddleware
-// )
+app.route('/api').get(
+  newLineMiddleware,
+  setUser,
+  stackPlayer(
+    () => {
+      // x.y.z // should throw an error
+      throw new Error('what!')
+      return []
+    },
+    {
+      autoCallNext: false,
+    }
+  ),
+  sendResMiddleware
+)
 
 // ^ test #11
 // * cause an error in the body of middlewareStack (async)
@@ -520,5 +521,5 @@ app.use((error, req, res, next) => {
   next()
 })
 
-console.clear()
+// console.clear()
 app.listen(8000, () => log.info(log.label, 'test listening on port 8000'))
