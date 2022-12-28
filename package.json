@@ -32,7 +32,7 @@
   "dependencies": {
     "@samislam/checktypes": "^1.0.1",
     "@samislam/log": "^1.1.4",
-    "catch-async-wrapper-express": "^1.2.1",
+    "catch-async-wrapper-express": "^1.2.2",
     "express": "^4.18.1",
     "lodash": "^4.17.21"
   },
