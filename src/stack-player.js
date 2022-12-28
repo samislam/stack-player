@@ -14,9 +14,8 @@ export default function stackPlayer(stack, options_ = {}) {
     // functionalMiddleware: @param stack: (req,res,sNext)=>(req,res,sNext)=>{}
     // functionalMiddlewareStack: @param stack: (req,res,sNext)=>[(req,res,sNext)=>{}]
     // middlewareStack @param stack: [(req,res,sNext)=>{}]
-    // * Global variables -----
     // & analyze the given arguments ---------------
-
+    // * Global variables -----
     let typeOfResult, result
 
     if (isArray(stack)) {
@@ -52,7 +51,6 @@ export default function stackPlayer(stack, options_ = {}) {
       }
       wasSNextCalled = true
     }
-    // * keep in mind the empty array case
     while (
       i < result.length &&
       !wasSNextCalledWithErr &&
