@@ -1,3 +1,1 @@
-const stackPlayer = require('./stack-player')
-
-module.exports = stackPlayer
+export { default } from './stack-player.js'

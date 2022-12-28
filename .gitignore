@@ -2,3 +2,4 @@
 /node_modules
 # files
 package-lock.json
+delete-after-push.md

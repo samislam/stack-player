@@ -1,6 +1,9 @@
+import log from '@samislam/log'
+
 function localErrorHandler(err, req, res, next) {
-  console.log('inside local error handler')
-  next(err)
+  log.error('inside local error handler')
+  log(err)
+  // next()
 }
 
-module.exports = localErrorHandler
+export default localErrorHandler

@@ -1,8 +1,9 @@
 {
   "name": "stack-player",
-  "version": "1.2.4",
+  "version": "1.3.0",
   "description": "stack-player is a small powerful express middleware that allows for executing middlewares switching between them conditionally and handling their errors separately",
   "main": "./src/index.js",
+  "type": "module",
   "scripts": {
     "test": "nodemon -q ./tests"
   },
@@ -31,14 +32,9 @@
   "dependencies": {
     "@samislam/checktypes": "^1.0.1",
     "@samislam/log": "^1.1.4",
+    "catch-async-wrapper-express": "^1.0.1",
     "express": "^4.18.1",
     "lodash": "^4.17.21"
-  },
-  "prettier": {
-    "singleQuote": true,
-    "semi": false,
-    "tabWidth": 2,
-    "printWidth": 130
   },
   "devDependencies": {
     "nodemon": "^2.0.19"
