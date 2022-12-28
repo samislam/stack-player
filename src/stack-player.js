@@ -1,9 +1,9 @@
-import debug from './utils/debug.js'
-import mergeObjects from './utils/mergeObjects.js'
-import catchAsync from 'catch-async-wrapper-express'
-import { isAsycOrSyncFunc, isArray } from '@samislam/checktypes'
+const { isAsycOrSyncFunc, isArray } = require('@samislam/checktypes')
+const catchAsync = require('catch-async-wrapper-express')
+const mergeObjects = require('./utils/mergeObjects')
+const debug = require('./utils/debug')
 
-export default function stackPlayer(stack, options_ = {}) {
+module.exports = function stackPlayer(stack, options_ = {}) {
   // options:
   // localErrorHandler: undefined (next)
   // autoCallNext: false

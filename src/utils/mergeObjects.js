@@ -1,4 +1,4 @@
-import _ from 'lodash'
+const _ = require('lodash')
 
 function mergeObjects(...sources) {
   let srcs = _.isArray(sources[0]) ? sources[0] : sources
@@ -7,4 +7,4 @@ function mergeObjects(...sources) {
   return mergedObject
 }
 
-export default mergeObjects
+module.exports = mergeObjects

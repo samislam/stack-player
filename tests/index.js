@@ -1,12 +1,12 @@
 /*=============================================
 =            importing dependencies            =
 =============================================*/
-import express from 'express'
-import log from '@samislam/log'
-import stackPlayer from '../src/index.js'
-import debug from '../src/utils/debug.js'
-import catchAsync from 'catch-async-wrapper-express'
-import localErrorHandler from './localErrorHandler.js'
+const express = require('express')
+const log = require('@samislam/log')
+const stackPlayer = require('../src/index')
+const debug = require('../src/utils/debug')
+const localErrorHandler = require('./localErrorHandler')
+const catchAsync = require('catch-async-wrapper-express')
 /*=====  End of importing dependencies  ======*/
 
 /*=============================================

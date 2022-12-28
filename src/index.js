@@ -1,1 +1,1 @@
-export { default } from './stack-player.js'
+module.exports = require('./stack-player')

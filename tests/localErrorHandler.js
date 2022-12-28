@@ -1,4 +1,4 @@
-import log from '@samislam/log'
+const log = require('@samislam/log')
 
 function localErrorHandler(err, req, res, next) {
   log.error('inside local error handler')
@@ -6,4 +6,4 @@ function localErrorHandler(err, req, res, next) {
   // next()
 }
 
-export default localErrorHandler
+module.exports = localErrorHandler

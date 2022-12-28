@@ -1,8 +1,8 @@
-import log from '@samislam/log'
+const log = require('@samislam/log')
 
 const mode = 'production'
 
-export default function debug(...logs) {
+module.exports = function debug(...logs) {
   if (mode !== 'dev') return
   log(...logs)
 }
