@@ -10,7 +10,7 @@ import type {
 import { isAsycOrSyncFunc, isArray } from '@samislam/checktypes'
 import { RequestHandler } from 'express'
 
-export function stackPlayer(stack: StackType, options: Options = {}) {
+export function stackplayer(stack: StackType, options: Options = {}) {
   const { autoCallNext = false, callNext = false, localErrorHandler } = options
   return catchAsync(async (req, res, next) => {
     // & analyze the given arguments ---------------
@@ -67,4 +67,4 @@ export function stackPlayer(stack: StackType, options: Options = {}) {
   }, localErrorHandler)
 }
 
-export default stackPlayer
+export default stackplayer
