@@ -6,7 +6,7 @@ import type {
   MiddlewareStack,
   FunctionalMiddleware,
   FunctionalMiddlewareStack,
-} from 'types'
+} from './types'
 import { isAsycOrSyncFunc, isArray } from '@samislam/checktypes'
 import { RequestHandler } from 'express'
 

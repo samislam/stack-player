@@ -1,11 +1,11 @@
 /*=============================================
 =            importing dependencies            =
 =============================================*/
-import express, { ErrorRequestHandler, RequestHandler } from 'express'
 import log from '@samislam/log'
-import stackPlayer from '../src/index'
+import stackPlayer from '../stack-player'
 import localErrorHandler from './localErrorHandler'
 import catchAsync from 'catch-async-wrapper-express'
+import express, { ErrorRequestHandler, RequestHandler } from 'express'
 /*=====  End of importing dependencies  ======*/
 
 /*=============================================
