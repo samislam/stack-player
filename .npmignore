@@ -1,0 +1,5 @@
+# files
+tsconfig.json
+# directories
+src/
+tests/

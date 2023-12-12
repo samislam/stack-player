@@ -1,29 +1,28 @@
 /*=============================================
 =            importing dependencies            =
 =============================================*/
-const express = require('express')
-const log = require('@samislam/log')
-const stackPlayer = require('../src/index')
-const debug = require('../src/utils/debug')
-const localErrorHandler = require('./localErrorHandler')
-const catchAsync = require('catch-async-wrapper-express')
+import express, { ErrorRequestHandler, RequestHandler } from 'express'
+import log from '@samislam/log'
+import stackPlayer from '../src/index'
+import localErrorHandler from './localErrorHandler'
+import catchAsync from 'catch-async-wrapper-express'
 /*=====  End of importing dependencies  ======*/
 
 /*=============================================
 =            pre-defined Middlewares            =
 =============================================*/
-const newLineMiddleware = (req, res, next) => {
+const newLineMiddleware: RequestHandler = (req, res, next) => {
   log('------------------------------')
   next()
 }
-const sendResMiddleware = (req, res, next) => {
+const sendResMiddleware: RequestHandler = (req, res, next) => {
   log.success('sendResMiddleware ran')
   res.end(`sendResMiddleware ran`)
   next()
 }
 
-const setUser = (req, res, next) => {
-  req.$USER = 'market'
+const setUser: RequestHandler = (req, res, next) => {
+  ;(req as any).$USER = 'market'
   next()
 }
 /*=====  End of pre-defined Middlewares  ======*/
@@ -176,13 +175,10 @@ app.get(
 
 app.use(sendResMiddleware)
 
-app.use((error, req, res, next) => {
-  debug('caught an error in the global error handler')
-  debug(error)
+app.use(((error, req, res, next) => {
   res.status(500).json({ message: 'Ooops! something went wrong!' })
   next()
-})
+}) as ErrorRequestHandler)
 
 // console.clear()
-debug('----------------------------')
 app.listen(8000, () => log.info(log.label, 'test listening on port 8000'))

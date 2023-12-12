@@ -1,5 +1,6 @@
 # directories
-/node_modules
+node_modules/
+temp/
+dist/
 # files
-package-lock.json
-delete-after-push.md
+package-lock.json 
